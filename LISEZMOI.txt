@@ -1,0 +1,128 @@
+Travail à effectuer:
+====================
+
+Pour commencer l'acte I, implémenter la recherche du nombre d'espèces et de
+caractéristiques d'un arbre, à modifier dans le fichier arbresphylo.{c,py}.
+
+Pour les actes suivants, vous aurez également à modifier le programme
+principal (main.{c,py}), ce qui vous permettra de tester par vous même vos
+fonctions.
+
+Nous vous fournissons également des programmes automatiques pour tester vos
+fonctions.  Pour chacune des fonctions des différents actes, il est important
+de respecter la spécification demandée pour pouvoir passer les suites de test.
+
+Nous vous fournissons des suites de tests pour les actes I, II et III-A.
+La façon de tester dépend du langage de programmation utilisé.
+
+Des tests pour les actes III-B et IV vous seront fournis ultérieurement.
+Par contre, vous êtes responsables de tester et fournir vous même quelques 
+tests pour l'acte V pour le rendu.
+
+
+Tester votre implémentation en C:
+=================================
+
+Vous trouverez dans le répertoire tests/ des fichiers vous permettant de
+tester par vous-même vos fonctions en exécutant votre programme principal, par 
+exemple ainsi :
+
+> ./main tests/arbre-simple.test
+
+Trois programmes sont également fournis: acte1.c, acte2.c et acte3.c qui ne
+doivent **pas** être modifiés.
+Ils sont compilés automatiquement avec la commande 'make' et utilisent les fonctions
+déclarées dans les fichiers .h et remplies dans les .c
+
+Pour commencer, vous devez dézipper le fichier tests-actes123.zip fourni:
+  > unzip tests-actes123.zip
+(ou via un explorateur de fichiers)
+Ceci vous créera trois répertoires tests_acte1, tests_acte2, tests_acte3.
+
+
+Pour tester l'acte I vous pouvez ainsi:
+- soit lancer manuellement un des tests ainsi :
+
+  > ./acte1 tests_acte1/acte1_arbre-simple.test
+
+- soit déclencher l'ensemble des tests :
+  > make tests_acte1
+
+Les actes II et III se testent de la même manière.
+Le format des fichiers de tests est décrit en fin de ce fichier.
+
+
+
+Tester votre implémentation en Python:
+======================================
+
+Vous trouverez dans le répertoire tests/ des fichiers vous permettant de
+tester par vous-même vos fonctions en exécutant votre programme principal, par 
+exemple ainsi :
+
+> ./main.py tests/arbre-simple.test
+
+Ou, si vous êtes sous Idle, modifiez les arguments directement au début du main.py
+
+
+Trois programmes sont également fournis: acte1.py, acte2.py et acte3.py qui ne
+doivent **pas** être modifiés, sauf pour les variables de tests au début des
+fichiers si vous travaillez sous Idle (variables 'do_all_test' et 'nomfichier').
+
+Ces programmes utilisent les fonctions définies dans arbres.py et arbresphylo.py
+
+Pour commencer, vous devez dézipper le fichier tests-actes123.zip fourni:
+  > unzip tests-actes123.zip
+(ou via un explorateur de fichiers)
+Ceci vous créera trois répertoires tests_acte1, tests_acte2, tests_acte3.
+
+Pour tester l'acte I vous pouvez ainsi:
+- soit utiliser manuellement un des fichiers de tests ainsi:
+
+  > ./acte1.py tests_acte1/acte1_arbre-simple.test
+
+- soit déclencher l'ensemble des tests ainsi:
+  > ./acte1.py -all
+
+(Ou, si vous n'utilisez pas la ligne de commande, en modifiant les premières lignes de acte1.py)
+
+Les actes II et III se testent de la même manière.
+Le format des fichiers de tests est décrit ci-après.
+
+
+
+Description des formats des fichiers de test
+============================================
+
+Format des tests de l'acte I :
+
+Nom du fichier arbre
+nombre d'especes
+nombre de caracteristiques
+
+
+Format des tests de l'acte II :
+
+Nom du fichier arbre
+nom de l'espece à chercher
+"present" ou "absent" selon que l'espece est presente ou pas
+Si espece presente :
+le nombre de caractéristiques
+Les caractéristiques de l'espèce (sur une seule ligne, séparées par un seul espace)
+
+
+Format des tests de l'acte III :
+
+Nom du fichier arbre
+Nom espèce à ajouter
+Nombre de caractéristiques de l'espèce à ajouter
+"possible" si l'insertion est légale, impossible sinon
+ -- série de tests sur l'arbre après insertion
+ Nombre espèces dans l'arbre
+ Nombre caractéristiques de l'arbre
+ Nombre espèces à tester (peut être moins que le nombre d'espèces total)
+ -- Pour chaque espèce
+ Nom espèce
+ Nombre caractéristiques de l'espèce
+ Liste caractéristiques (sur une seule ligne, séparées par un seul espace)
+
