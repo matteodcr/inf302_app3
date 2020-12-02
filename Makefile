@@ -15,7 +15,7 @@ tests_acte2: acte2
 tests_acte3: acte3
 	@set -e; for f in `ls tests_acte3`; do ./acte3 tests_acte3/$$f; done; printf "\033[0;32mSuccès\033[0m sur l'acte III-A !\n"
 
-OBJS= arbres.o arbresphylo.o listes.o common_tests.o
+OBJS= arbres.o arbresphylo.o listes.o common_tests.o 
 acte1: acte1.o $(OBJS)
 acte2: acte2.o $(OBJS)
 acte3: acte3.o $(OBJS)
@@ -26,5 +26,10 @@ acte3: acte3.o $(OBJS)
 # comment créer les .o à partir des .c
 main: main.o arbresphylo.o arbres.o listes.o
 
+
+affichage: affichage.c affichage.h arbres.o arbres.h
+	$(CC) arbres.o affichage.c -o $@
+
 clean:
 	rm -f main *.o
+

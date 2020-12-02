@@ -682,3 +682,10 @@ tests_acte2/acte2_amphibians.test_Xenorhina_bouwensi
 tests_acte2/acte2_amphibians.test_Xenorhina_lanthanites
 tests_acte2/acte2_amphibians.test_Xenorhina_obesa
 tests_acte2/acte2_amphibians.test_Xenorhina_varia
+affichage
+arbre.png
+sortie.dot
+affichage.o
+tests/arbre-simple.test
+tests/arbre-simple.test
+tests/arbre-simple.test
