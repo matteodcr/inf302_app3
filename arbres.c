@@ -95,6 +95,23 @@ arbre lire_arbre (FILE *f)
 
 void affiche_arbre (noeud *racine)
 {
-    /* à remplir */
+    
+}
+
+void afficherParenthese(arbre a) {
+    if (a!=NULL) {
+        if (a->gauche!=NULL) {
+            printf("(");
+            afficherParenthese(a->gauche);
+            printf(")");}
+            printf(" %s ",a->valeur);
+            
+        if (a->droit!=NULL) {
+            printf("(");
+            afficherParenthese(a->droit);
+            printf(")");
+        }
+    return;
+    } 
 }
 

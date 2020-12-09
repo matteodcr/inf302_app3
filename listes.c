@@ -4,11 +4,8 @@
 #include <string.h>
 #include "listes.h"
 
-
-liste_t* init_liste_vide() {
-    liste_t *L = malloc(sizeof(liste_t));
+void init_liste_vide(liste_t* L) {
     L->tete = NULL;
-    return L;
 }
 
 cellule_t* init_cellule_vide() {
@@ -20,7 +17,6 @@ cellule_t* init_cellule_vide() {
 
 /* retourne 0 si OK, 1 sinon  */
 int ajouter_tete(liste_t* L, string c) { 
-    printf("ajouter\n");
     if (L == NULL){
         return 1;
     }
@@ -38,4 +34,17 @@ cellule_t *pop(liste_t *L){
     return ret;    
 }
 
-
+void ajouter_en_queue(liste_t *L, string c){
+    if (L->tete == NULL){
+        ajouter_tete(L,c);
+    }
+    else if(L->queue == NULL){
+        L->queue->val = c;
+    }
+    else{
+        cellule_t *cel = init_cellule_vide();
+        cel->val = c;
+        L->queue->suivant = cel;
+        L->queue = L->queue->suivant;
+    }
+}

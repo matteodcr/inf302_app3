@@ -15,12 +15,13 @@ typedef struct cellule cellule_t;
 
 struct liste {
 	cellule_t *tete;
+	cellule_t *queue;
 };
 
 typedef struct liste liste_t;
 
 /* cree une nouvelle liste, initialement vide */
-liste_t* init_liste_vide();
+void init_liste_vide(liste_t* L);
 
 cellule_t *init_cellule_vide();
 
@@ -32,6 +33,8 @@ int ajouter_tete(liste_t* L, string c);
  */
 
 cellule_t *pop(liste_t *L);
+
+void ajouter_en_queue(liste_t *L, string c);
 
 #endif /* _LISTES_H */
 

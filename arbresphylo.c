@@ -79,8 +79,95 @@ int rechercher_espece (arbre racine, char *espece, liste_t* seq){
 /* Doit renvoyer 0 si l'espece a bien ete ajoutee, 1 sinon, et ecrire un 
  * message d'erreur.
  */
-int ajouter_espece (arbre* a, char *espece, cellule_t* seq) {
 
-    return 1;
+int est_feuille(arbre a){
+    return (a->gauche == NULL)&&(a->droit == NULL);
 }
 
+int avoir_cara(arbre* a, cellule_t* seq){
+    return (seq != NULL) && (0 == strcmp((*a)->valeur, seq->val));
+}
+
+void parcours_arbre_rec(arbre* a, char *espece, cellule_t* seq){
+    if (avoir_cara(a, seq)){
+        ajouter_espece(&(*a)->droit, espece, seq->suivant);
+        }
+    else{
+        ajouter_espece(&(*a)->gauche, espece, seq);
+    }
+}
+
+void construire_arbre(noeud *noeud_courant, noeud *noeud_espece, cellule_t *cellule){
+    while (cellule){
+            noeud *noeud_suivant = nouveau_noeud();
+            noeud_suivant->valeur = cellule->val;
+
+            noeud_courant->droit = noeud_suivant;
+            noeud_courant = noeud_suivant;
+            cellule = cellule->suivant;
+        }
+    noeud_courant->droit = noeud_espece;
+}
+
+int ajouter_espece (arbre* a, char *espece, cellule_t* seq) {
+
+    if ((*a!=NULL)&&(!est_feuille(*a))){
+        parcours_arbre_rec(a, espece, seq);
+    }
+
+    else{
+        if (seq == NULL){
+            fprintf(stderr, "Ne peut ajouter %s: possède les mêmes caractères que %s", espece, (*a)->valeur);
+            return 1;  
+        }
+         //Initialisation du noeud "de départ"
+        noeud *noeud_caractere = nouveau_noeud();
+        noeud_caractere->valeur = seq->val;
+        noeud_caractere->gauche = *a;
+        
+        //Initialisation du noeud "final"
+        noeud *noeud_espece = nouveau_noeud();
+        noeud_espece->valeur = espece;
+
+        cellule_t *cellule = seq->suivant;
+        noeud* noeud_courant = noeud_caractere;
+        
+        construire_arbre(noeud_courant, noeud_espece, cellule);
+        
+        *a = noeud_caractere;
+    }
+    return 0;
+}
+
+
+
+/* Besoin d'une pile*/
+
+int afficher_carac(arbre a){
+
+    liste_t *file = NULL;
+    init_liste_vide(file);
+
+    ajouter_en_queue(file, a->valeur);
+
+    while (file->tete != NULL){
+
+        cellule_t *m = pop(file);
+
+        if (m == NULL){
+            printf("Erreur pop\n");
+            return 1;
+        }
+
+        if (a->gauche != NULL && (a->gauche->gauche != NULL || a->gauche->droit != NULL)){
+            ajouter_en_queue(file, a->gauche->valeur);
+            printf("%s", a->gauche->valeur);
+        }
+
+        if (a->droit != NULL && (a->droit->gauche != NULL || a->droit->droit != NULL)){
+            ajouter_en_queue(file, a->droit->valeur);
+            printf("%s", a->droit->valeur);
+        }
+    }
+    return 0;
+}

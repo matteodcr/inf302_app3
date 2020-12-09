@@ -20,7 +20,6 @@ int rechercher_rec (arbre racine, char *espece, liste_t *seq);
  */
 int rechercher_espece (arbre racine, char *espece, liste_t* seq);
 
-
 int ajouter_espece (arbre* racine, char *espece, cellule_t* seq);
 
 

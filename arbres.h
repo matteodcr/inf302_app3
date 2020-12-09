@@ -29,7 +29,9 @@ noeud* nouveau_noeud (void);
 arbre lire_arbre (FILE *f);
 
 /* Fonction d'affichage, à remplir */
-void affiche_arbre (arbre);
+
+void affiche_arbre (arbre a);
+void afficherParenthese(arbre a);
 
 
 /* Macros pour de l'affichage uniquement si DEBUG est != 0 */
