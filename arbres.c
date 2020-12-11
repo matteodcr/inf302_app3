@@ -111,6 +111,7 @@ void afficherParenthese(arbre a) {
             afficherParenthese(a->droit);
             printf(")");
         }
+    
     return;
     } 
 }

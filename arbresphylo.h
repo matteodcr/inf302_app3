@@ -22,5 +22,9 @@ int rechercher_espece (arbre racine, char *espece, liste_t* seq);
 
 int ajouter_espece (arbre* racine, char *espece, cellule_t* seq);
 
+/* 
+ * Affiche les différents noeuds regroupés par hauteur
+ */
+void afficher_par_niveau(arbre a, FILE *fsortie);
 
 #endif

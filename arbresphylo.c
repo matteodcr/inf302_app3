@@ -139,35 +139,94 @@ int ajouter_espece (arbre* a, char *espece, cellule_t* seq) {
     return 0;
 }
 
+int non_feuille(arbre a){
+    return (a->gauche != NULL || a->droit != NULL);
+}
 
+/* 
+ * Construit une liste constituée chaque noeud de l'arbre et leur hauteur
+ */
+int retour_ligne(arbre a, liste_n* seq){
+    if(a == NULL){return 1;}
 
-/* Besoin d'une pile*/
+    //Liste temporaire
+    liste_n L;
+    init_liste_vide_n(&L);
 
-int afficher_carac(arbre a){
+    cellule_n *cel = init_cellule_vide_n();
+    arbre racine = nouveau_noeud();
 
-    liste_t *file = NULL;
-    init_liste_vide(file);
+    int h = 0;
+    ajouter_en_queue_n(&L, a, h);
 
-    ajouter_en_queue(file, a->valeur);
+    while (L.tete != NULL){
+        cel = pop_n(&L);
+        racine = cel->nd;
+        h = cel->hauteur + 1;
 
-    while (file->tete != NULL){
+        ajouter_en_queue_n(seq, racine, h);
 
-        cellule_t *m = pop(file);
-
-        if (m == NULL){
-            printf("Erreur pop\n");
-            return 1;
+        if ((racine->gauche != NULL) && (non_feuille(racine->gauche))){
+            ajouter_en_queue_n(&L, racine->gauche, h);
         }
+        if ((racine->droit != NULL) && (non_feuille(racine->droit))){
+            ajouter_en_queue_n(&L, racine->droit, h);
 
-        if (a->gauche != NULL && (a->gauche->gauche != NULL || a->gauche->droit != NULL)){
-            ajouter_en_queue(file, a->gauche->valeur);
-            printf("%s", a->gauche->valeur);
-        }
-
-        if (a->droit != NULL && (a->droit->gauche != NULL || a->droit->droit != NULL)){
-            ajouter_en_queue(file, a->droit->valeur);
-            printf("%s", a->droit->valeur);
         }
     }
     return 0;
 }
+/* 
+ * Construit une liste constituée de la cellule la plus à droite 
+ * de chaque hauteur
+ */
+
+void tri_hauteur(liste_n *L){
+    cellule_n* cell = L->tete;
+
+    liste_n new_L;
+    init_liste_vide_n(&new_L);
+
+    while (cell){
+        if ((cell->suivant == NULL)||(cell->hauteur != cell->suivant->hauteur)){
+            ajouter_en_queue_n(&new_L, cell->nd, cell->hauteur);
+        }
+        cell = cell->suivant;
+    }
+    *L = new_L;
+}
+
+void afficher_par_niveau(arbre a, FILE *fsortie){
+    if (a != NULL){
+        // Liste "principale" parcourue en largeur
+        liste_n file;
+        init_liste_vide_n(&file);
+        ajouter_en_queue_n(&file, a, 0);
+
+        //Liste constituée des noeuds les plus à droite pour chaque hauteur
+        liste_n seq;
+        init_liste_vide_n(&seq);
+        retour_ligne(a, &seq);
+        tri_hauteur(&seq);
+        
+        while(file.tete != NULL){
+            cellule_n *cel = pop_n(&file);
+            arbre racine = cel->nd;
+
+            fprintf(fsortie,"%s " ,racine->valeur);
+
+            if((racine->gauche != NULL) && (non_feuille(racine->gauche))){
+                ajouter_en_queue_n(&file, racine->gauche, 0);
+            }
+
+            if((racine->droit != NULL) && (non_feuille(racine->droit))){
+                ajouter_en_queue_n(&file, racine->droit, 0);
+            }
+
+            if(strcmp(racine->valeur, seq.tete->nd->valeur)==0){
+                fprintf(fsortie,"\n");
+                seq.tete = seq.tete->suivant;
+            }
+        }
+    }
+} 
