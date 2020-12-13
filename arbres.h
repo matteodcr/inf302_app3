@@ -1,5 +1,6 @@
 #ifndef ARBRES_H
 #define ARBRES_H
+#include <stdio.h>
 
 /* Structure d'un noeud d'arbre */
 struct noeud_s;
@@ -32,6 +33,7 @@ arbre lire_arbre (FILE *f);
 
 void affiche_arbre (arbre a);
 void afficherParenthese(arbre a);
+void afficher2D(arbre a,int d);
 
 
 /* Macros pour de l'affichage uniquement si DEBUG est != 0 */

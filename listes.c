@@ -8,18 +8,9 @@ void init_liste_vide(liste_t* L) {
     L->tete = NULL;
 }
 
-void init_liste_vide_n(liste_n* L) {
-    L->tete = NULL;
-}
 
 cellule_t* init_cellule_vide() {
     cellule_t *cel = malloc(sizeof(cellule_t));
-    cel->suivant = NULL;
-    return cel;
-}
-
-cellule_n* init_cellule_vide_n() {
-    cellule_n *cel = malloc(sizeof(cellule_n));
     cel->suivant = NULL;
     return cel;
 }
@@ -37,12 +28,14 @@ int ajouter_tete(liste_t* L, string c) {
     return 0;
 }
 
+
 cellule_t *pop(liste_t *L){
     cellule_t *ret = init_cellule_vide();
     ret = L->tete;
     L->tete = L->tete->suivant;
     return ret;    
 }
+
 
 void ajouter_en_queue(liste_t *L, string c){
     if (L->tete == NULL){
@@ -57,6 +50,7 @@ void ajouter_en_queue(liste_t *L, string c){
     }
 }
 
+
 //Prend une liste de noeud en argument
 cellule_n *pop_n(liste_n *L){
     cellule_n *ret = init_cellule_vide_n();
@@ -66,6 +60,21 @@ cellule_n *pop_n(liste_n *L){
     }
     return ret;
 }
+
+/* 
+ * Fonctions identiques pour la liste chainée de noeuds.
+*/
+void init_liste_vide_n(liste_n* L) {
+    L->tete = NULL;
+}
+
+
+cellule_n* init_cellule_vide_n() {
+    cellule_n *cel = malloc(sizeof(cellule_n));
+    cel->suivant = NULL;
+    return cel;
+}
+
 
 int ajouter_tete_n(liste_n* L, noeud* n, int h) {
     if (L == NULL){
@@ -80,7 +89,6 @@ int ajouter_tete_n(liste_n* L, noeud* n, int h) {
 }
 
 //Prend une liste de noeud en argument
-
 void ajouter_en_queue_n(liste_n *L, noeud *n, int h){
 
      if (L->tete == NULL){

@@ -58,11 +58,14 @@ void seq_print(liste_t* seq){
     assert(seq);
     
     cellule_t* cel = seq->tete;
-
+    if (cel == NULL){
+        printf("NULL\n");
+    }
     while (cel != NULL) {
         printf("%s ",cel->val);
         cel = cel->suivant;
     }
+    printf("\n");
 }
 
 
@@ -71,14 +74,9 @@ int rechercher_espece (arbre racine, char *espece, liste_t* seq){
     if (x==1){
         return 1;
     }
-    seq_print(seq);
     return 0;
 }
 
-
-/* Doit renvoyer 0 si l'espece a bien ete ajoutee, 1 sinon, et ecrire un 
- * message d'erreur.
- */
 
 int est_feuille(arbre a){
     return (a->gauche == NULL)&&(a->droit == NULL);
@@ -88,6 +86,7 @@ int avoir_cara(arbre* a, cellule_t* seq){
     return (seq != NULL) && (0 == strcmp((*a)->valeur, seq->val));
 }
 
+
 void parcours_arbre_rec(arbre* a, char *espece, cellule_t* seq){
     if (avoir_cara(a, seq)){
         ajouter_espece(&(*a)->droit, espece, seq->suivant);
@@ -96,6 +95,7 @@ void parcours_arbre_rec(arbre* a, char *espece, cellule_t* seq){
         ajouter_espece(&(*a)->gauche, espece, seq);
     }
 }
+
 
 void construire_arbre(noeud *noeud_courant, noeud *noeud_espece, cellule_t *cellule){
     while (cellule){
@@ -109,8 +109,8 @@ void construire_arbre(noeud *noeud_courant, noeud *noeud_espece, cellule_t *cell
     noeud_courant->droit = noeud_espece;
 }
 
-int ajouter_espece (arbre* a, char *espece, cellule_t* seq) {
 
+int ajouter_espece (arbre* a, char *espece, cellule_t* seq) {
     if ((*a!=NULL)&&(!est_feuille(*a))){
         parcours_arbre_rec(a, espece, seq);
     }
@@ -176,6 +176,7 @@ int retour_ligne(arbre a, liste_n* seq){
     }
     return 0;
 }
+
 /* 
  * Construit une liste constituée de la cellule la plus à droite 
  * de chaque hauteur
@@ -229,4 +230,100 @@ void afficher_par_niveau(arbre a, FILE *fsortie){
             }
         }
     }
-} 
+}
+
+/* 
+ * Construit une liste des feuilles dépendant de l'arbre a 
+*/
+void listF(arbre a, liste_t *seq){
+    if(a != NULL){
+        if(a->gauche!=NULL){
+            printf("%s", a->gauche->valeur);
+            if (est_feuille(a->gauche)){
+                ajouter_en_queue(seq, a->gauche->valeur);
+            }
+            listF(a->gauche, seq);
+        }
+
+        if(a->droit!=NULL){
+            printf("%s", a->droit->valeur);
+            if (est_feuille(a->droit)){
+                ajouter_en_queue(seq, a->droit->valeur);
+            }
+            listF(a->droit, seq);
+        }
+    }
+}
+
+
+/* 
+ * Renvoie 1 si les deux listes sont égales, 0 sinon
+*/
+int Lcmpr(cellule_t *seq1, cellule_t *seq2){
+    while(seq1 != NULL && seq2 != NULL){
+        if (strcmp(seq1->val, seq2->val)!=0){return 0;}
+        seq1 = seq1->suivant;
+        seq2 = seq2->suivant;
+    }
+    //Si les listes sont en plus de meme longueur
+    if (seq1 == NULL && seq2 == NULL){return 1;}
+
+    return 0;
+}
+
+
+/* 
+ * Renvoie 1 si a est un clade, 0 sinon
+*/
+int est_clade(arbre a, cellule_t *seq){
+    liste_t liste_feuille;
+    init_liste_vide(&liste_feuille);
+
+    if(a!=NULL){
+        if (est_feuille(a)){
+            ajouter_en_queue(&liste_feuille, a->valeur);
+        }
+        else{
+            //Si c'est un caractère on fait la liste de toutes les espèces filles
+            listF(a, &liste_feuille);
+        }
+    }
+    return Lcmpr(liste_feuille.tete, seq);
+}
+
+
+/* 
+ * Recursivement ajoute si c'est possible une caracéristique a un arbre non nul
+*/
+int ajouter_carac_rec(arbre* a, char* carac, cellule_t* seq){
+    //On cherche le clade
+    if(!est_clade(*a, seq)){
+        if(*a == NULL){
+            printf("Ne peut ajouter %s: ne forme pas un sous-arbre.\n", carac);
+            return 0;
+        }
+        else{
+            ajouter_carac_rec(&(*a)->gauche, carac, seq);
+            ajouter_carac_rec(&(*a)->droit, carac, seq);
+        }
+        return 0;
+    }
+
+    else{
+        //On rajoute la nouvelle caractéristique
+        noeud *x = nouveau_noeud();
+        x->valeur = carac;
+        x->droit = *a;
+        *a = x;
+        return 1;
+    }
+}
+
+
+int ajouter_carac(arbre* a, char* carac, cellule_t* seq){
+    if(*a != NULL){
+        ajouter_carac_rec(a, carac, seq);
+        return 1;
+    }
+    return 0;
+}

@@ -66,7 +66,7 @@ int test_list_carac(int nb_attendues, char** attendues, liste_t trouvees) {
 		if (cel == NULL) {
 			fprintf(stderr, "\033[0;31mERREUR\033[0m - les caractéristiques suivantes sont manquantes :\n");
 			for (int j = i; j < nb_attendues; j++) {
-				fprintf(stderr, "%s ", expected);
+				fprintf(stderr, "%s ", attendues[j]);
 			}
 			fprintf(stderr, "\n");
 			// TOOO
@@ -90,6 +90,32 @@ int test_list_carac(int nb_attendues, char** attendues, liste_t trouvees) {
 		}
 		fprintf(stderr, "\n");
 		return 1;
+	}
+	return 0;
+}
+
+int verifier_arbre(arbre a, char* nom_arbre,
+		int nb_especes_attendues, int nb_caracs_attendues,
+		int nb_especes_tests,
+		espece_caracs_t * especes_caracs // consommé - ne pas réutiliser
+		) {
+	if (test_nb_esp_caracs(a, nom_arbre, nb_especes_attendues, nb_caracs_attendues) != 0)
+		return 1;
+	for (int i = 0; i < nb_especes_tests; i++){
+		liste_t seq;
+		init_liste_vide(&seq);
+		espece_caracs_t esp_car = especes_caracs[i];
+		printf("Testing %s\n", esp_car.espece);
+		int present = rechercher_espece(a, esp_car.espece, &seq);
+		if (present != 0) {
+			fprintf(stderr, "\033[0;31mERREUR\033[0m %s n'est pas présent dans l'arbre %s après insertion\n",
+					esp_car.espece, nom_arbre);
+			return 1;
+		}
+		if (test_list_carac(esp_car.nb_caracs, esp_car.caracs, seq) != 0) {
+			return 1;
+		}
+		free( esp_car.caracs);
 	}
 	return 0;
 }

@@ -92,11 +92,11 @@ arbre lire_arbre (FILE *f)
 }
 
 
-
-void affiche_arbre (noeud *racine)
-{
-    
-}
+/* 
+ * Les fonctions ci dessous d'affichages proviennent des exos de la semaine de transition 
+ * sur Moodle, elles nous on servis a debugger nos fonction mais elles ne sont pas utilisées 
+ * dans les fonctions finales.
+*/
 
 void afficherParenthese(arbre a) {
     if (a!=NULL) {
@@ -115,4 +115,29 @@ void afficherParenthese(arbre a) {
     return;
     } 
 }
+
+void decalage(int n) {
+    int i;
+    for(i=0;i<n;i++)printf("   ");
+    return;
+}
+
+
+void afficher2D(arbre a,int d) {
+    if (a!=NULL) {
+        afficher2D(a->droit,d+1);
+
+        if (a->droit!=NULL) {
+            decalage(d+1);
+             printf("/\n");}
+        
+        decalage(d);
+        printf(" %s ",a->valeur);
+        printf("\n");
+
+        if (a->gauche!=NULL) {
+            decalage(d+1);
+            printf("\\\n");}
+            afficher2D(a->gauche,d+1);}    
+return;}
 

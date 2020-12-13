@@ -19,3 +19,5 @@ tests/arbre-simple.test
 tests/arbre-simple.test
 acte3b
 acte3b.o
+acte4
+acte4.o

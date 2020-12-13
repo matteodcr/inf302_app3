@@ -2,9 +2,6 @@
 #define _LISTES_H
 #include "arbres.h"
 
-typedef struct liste liste_t;
-/* Type de liste à compléter selon votre besoin. */
-
 typedef char* string;
 
 struct cellule {
